@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:clima/services/location.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -33,6 +34,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
     if (response.statusCode == 200) {
       String data = response.body;
       print(data);
+      //var is dealing with dynamically everything and you can look at data and assign the datatypes
+      var decodeddata = jsonDecode(data);
+      double abc = decodeddata['main']['temp'];
+      int id = decodeddata['weather']['0']['id'];
+      String city = decodeddata['name'];
     } else {
       print(response.statusCode);
     }
@@ -55,3 +61,9 @@ class _LoadingScreenState extends State<LoadingScreen> {
     return Scaffold();
   }
 }
+//first key is going to be the string coord,acess through []
+//I'm going to add another set of square brackets and add the word lon,
+// var abc = json.decode(data)['coord']['lon'];
+//       print(abc);
+//       var res = json.decode(data)['weather']['0']['main'];
+//       print(res);

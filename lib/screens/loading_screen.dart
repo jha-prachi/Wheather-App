@@ -3,12 +3,16 @@ import 'package:clima/services/location.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+const apikey = 'a8d75183b85478dff0b4ebd264e804ab';
+
 class LoadingScreen extends StatefulWidget {
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
+  double latitude;
+  double longitude;
   @override
   //if we want something to happen the moment that our stateful widget is created and
   // add into the tree, then we're going to put our code inside initState.
@@ -23,13 +27,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void getlocation() async {
     Location mylocation = Location();
     await mylocation.getCurrentLocation();
-    print(mylocation.latitude);
-    print(mylocation.longitude);
+    latitude = mylocation.latitude;
+    longitude = mylocation.longitude;
   }
 
   void getData() async {
     http.Response response = await http.get(
-        'https://samples.openweathermap.org/data/2.5/weather?lat=35&lon=139&appid=439d4b804bc8187953eb36d2a8c26a02');
+        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apikey');
 
     if (response.statusCode == 200) {
       String data = response.body;
@@ -57,7 +61,7 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    getData();
+    
     return Scaffold();
   }
 }

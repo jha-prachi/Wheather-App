@@ -1,7 +1,7 @@
+import 'package:clima/services/networking.dart';
 import 'package:flutter/material.dart';
 import 'package:clima/services/location.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
+
 
 const apikey = 'a8d75183b85478dff0b4ebd264e804ab';
 
@@ -10,7 +10,7 @@ class LoadingScreen extends StatefulWidget {
   _LoadingScreenState createState() => _LoadingScreenState();
 }
 
-class _LoadingScreenState extends State<LoadingScreen> {
+class _LoadingScreenState extends State<LoadingScreen> {  
   double latitude;
   double longitude;
   @override
@@ -20,32 +20,29 @@ class _LoadingScreenState extends State<LoadingScreen> {
   //only created at once
   void initState() {
     super.initState();
-    getlocation();
+    getlocationData();
   }
 
   //getter
-  void getlocation() async {
+  void getlocationData() async {
     Location mylocation = Location();
     await mylocation.getCurrentLocation();
     latitude = mylocation.latitude;
     longitude = mylocation.longitude;
+    NetworkHelper networkHelper=NetworkHelper(
+      'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apikey');
+
+
+      var wheatherdata=await networkHelper.getData();
+
+
+      // double abc = decodeddata['main']['temp'];
+      // int id = decodeddata['weather']['0']['id'];
+      // String city = decodeddata['name'];
+
   }
 
-  void getData() async {
-    http.Response response = await http.get(
-        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apikey');
-
-    if (response.statusCode == 200) {
-      String data = response.body;
-      print(data);
-      //var is dealing with dynamically everything and you can look at data and assign the datatypes
-      var decodeddata = jsonDecode(data);
-      double abc = decodeddata['main']['temp'];
-      int id = decodeddata['weather']['0']['id'];
-      String city = decodeddata['name'];
-    } else {
-      print(response.statusCode);
-    }
+  
 
     //response.statusCode
     //(body)same data milega jo mujhe browser par mila tha
@@ -61,7 +58,6 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold();
   }
 }

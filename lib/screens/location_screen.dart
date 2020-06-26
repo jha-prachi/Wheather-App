@@ -14,7 +14,7 @@ class _LocationScreenState extends State<LocationScreen> {
         decoration: BoxDecoration(
           image: DecorationImage(
             image: AssetImage('images/location_background.jpg'),
-            fit: BoxFit.cover,
+            fit: BoxFit.cover, 
             colorFilter: ColorFilter.mode(
                 Colors.white.withOpacity(0.8), BlendMode.dstATop),
           ),

@@ -1,10 +1,10 @@
 import 'package:clima/screens/location_screen.dart';
-import 'package:clima/services/networking.dart';
-import 'package:flutter/material.dart';
-import 'package:clima/services/location.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-const apikey = 'a8d75183b85478dff0b4ebd264e804ab';
+import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:clima/services/weather.dart';
+
+// const apikey = 'a8d75183b85478dff0b4ebd264e804ab';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -14,8 +14,6 @@ class LoadingScreen extends StatefulWidget {
 }
 
 class _LoadingScreenState extends State<LoadingScreen> {
-  double latitude;
-  double longitude;
   @override
   //if we want something to happen the moment that our stateful widget is created and
   // add into the tree, then we're going to put our code inside initState.
@@ -28,17 +26,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
   //getter
   void getlocationData() async {
-    Location mylocation = Location();
-    await mylocation.getCurrentLocation();
-    latitude = mylocation.latitude;
-    longitude = mylocation.longitude;
-    NetworkHelper networkHelper = NetworkHelper(
-        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apikey&units=metric');
-
-    var wheatherdata = await networkHelper.getData();
+    WeatherModel weatherModel = WeatherModel();
+    var weatherdata=await weatherModel.getlocationweather();
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return LocationScreen(locationWeather: wheatherdata,);
+      return LocationScreen(
+        locationWeather: weatherdata,
+      );
     }));
   }
 

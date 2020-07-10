@@ -23,6 +23,15 @@ class _LocationScreenState extends State<LocationScreen> {
 
   void UpdateUi(dynamic wheatherdata) {
     setState(() {
+
+      // Here i Tackle if weatherdata is null due to some reason,my app will not crash
+      if (wheatherdata == null) {
+        temparture = 0;
+        weatherIcon = 'Error';
+        weathermsg = 'Unable to load the Data';
+        city = '';
+        return;
+      }
       double abc = wheatherdata['main']['temp'];
       temparture = abc.toInt();
       var id = wheatherdata['weather'][0]['id'];
@@ -55,7 +64,10 @@ class _LocationScreenState extends State<LocationScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
                   FlatButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      var weatherdata = await weather.getlocationweather();
+                      UpdateUi(weatherdata);
+                    },
                     child: Icon(
                       Icons.near_me,
                       size: 50.0,

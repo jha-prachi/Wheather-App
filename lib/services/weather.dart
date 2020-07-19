@@ -7,6 +7,13 @@ double latitude;
 double longitude;
 
 class WeatherModel {
+  Future<dynamic> getCityWeather(String CityName)async {
+    var openweatherurl = '$url?q=$CityName&appid=$apikey&units=metric';
+    NetworkHelper networkHelper = NetworkHelper(openweatherurl);
+    var weatherdata = await networkHelper.getData();
+    return weatherdata;
+  }
+
   Future<dynamic> getlocationweather() async {
     Location mylocation = Location();
     await mylocation.getCurrentLocation();
